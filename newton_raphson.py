@@ -1,6 +1,6 @@
 import math
 
-def newton_raphson(x0, es, imax):
+def newton_raphson(x0, tol, imax):
     xr = x0
     it = 0
     while True:
@@ -8,13 +8,13 @@ def newton_raphson(x0, es, imax):
         xr = xrold - f(xrold) / f_(xrold)
         it = it + 1
         if xr != 0:
-            ea = abs((xr - xrold) / xr) * 100
-        if ea < es or it >= imax:
+            er = abs(xr - xrold) # abs(f(xr)) #
+        if er < tol or it >= imax:
             break
-    return xr, it, ea
+    return xr, it, er
 
 def f(x):
-    return math.exp(-x**2) + math.sin(x)
+    return x**3 - x - 1
 
 def f_(x):
     return (f(x+1e-6) - f(x)) / 1e-6

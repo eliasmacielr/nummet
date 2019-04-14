@@ -1,23 +1,24 @@
-from math import *
+import math
 
-def false_position(xl, xu, es, imax, xr):
+def false_position(xl, xu, tol, imax, xr):
     it = 0
     while True:
         xrold = xr
         xr = xu - (f(xu) * (xl - xu))/(f(xl) - f(xu))
         it = it + 1
+        fxr = f(xr)
         if xr != 0:
-            ea = abs((xr - xrold) / xr) * 100
-        test = f(xl) * f(xr)
+            er = abs(xr - xrold) # abs(fxr) #
+        test = f(xl) * fxr
         if test < 0:
             xu = xr
         elif test > 0:
             xl = xr
         else:
-            ea = 0
-        if ea < es or it >= imax
+            er = 0
+        if er < tol or it >= imax:
             break
-    return xr, it, ea
+    return xr, it, er
 
 def f(x):
     return math.exp(-x**2) + math.sin(x)

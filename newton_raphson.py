@@ -13,9 +13,8 @@ def newton_raphson(x0, es, imax):
             break
     return xr, it, ea
 
-
 def f(x):
-    return math.exp(-x) - x # e^(-x) - x
+    return math.exp(-x**2) + math.sin(x)
 
 def f_(x):
     return (f(x+1e-6) - f(x)) / 1e-6

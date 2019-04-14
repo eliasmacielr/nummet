@@ -14,4 +14,4 @@ def fixpt(x0, es, imax):
     return xr, it, ea
 
 def g(x):
-    return math.exp(-x) # e^(-x)
+    return math.exp(-x)

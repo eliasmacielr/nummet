@@ -7,7 +7,7 @@ def secant(x_1, x0, tol, imax):
     while True:
         xroldold = xrold
         xrold = xr
-        xr = xrold - (f(xrold) * (xroldold - xrold))/(f(xroldold) - f(xrold))
+        xr = xrold - (f(xrold)*(xroldold - xrold))/(f(xroldold) - f(xrold))
         it = it + 1
         if xr != 0:
             er = abs(xr - xrold) # abs(f(xr)) #
@@ -16,4 +16,4 @@ def secant(x_1, x0, tol, imax):
     return xr, it, er
 
 def f(x):
-    return (x - 1)**2
+    return math.exp(-x**2) + math.sin(x)

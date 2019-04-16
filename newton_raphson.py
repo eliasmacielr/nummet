@@ -14,7 +14,7 @@ def newton_raphson(x0, tol, imax):
     return xr, it, er
 
 def f(x):
-    return x**3 - x - 1
+    return math.exp(-x**2) + math.sin(x)
 
 def f_(x):
     return (f(x+1e-6) - f(x)) / 1e-6

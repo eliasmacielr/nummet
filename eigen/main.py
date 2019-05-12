@@ -1,24 +1,33 @@
 from time import time
 from numpy import append
 from numpy import array
+from numpy import loadtxt
+from numpy import matmul
+from numpy import matrix
 
 from power_iteration import power_iteration
 from inverse_iteration import inverse_iteration
 
 
 def main():
-    A = array([[4,-5],
-               [2,-3]])
+    k = 5
+    Z = loadtxt('A')
+    #B = matmul(Z, matrix.transpose(Z))
     s = 1
     f = 0
     e = 10e-5
-    u = 500
-    x = power_method(A, s, f, e, u)
+    u = 0
+    print('k =', k)
+    print('s =', s)
+    print('f =', f)
+    print('e =', e)
+    print('u =', u)
+    x = power_method(Z, s, f, e, u)
     print(x)
 
 
 def power_method(A, s, f, e, u):
-    x = array([1,0])
+    x = loadtxt('x',max_rows=(A.shape[0]))
     maxit = 1000
     start = None
     end = None

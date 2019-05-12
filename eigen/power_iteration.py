@@ -10,7 +10,7 @@ def power_iteration(A, x, e, maxit):
     a = matmul(A, x)
     l = dot(a, x)
     i = 0
-    while norm(a - l * x) > e * abs(l) and i < maxit:
+    while norm(a - l*x) > e * abs(l) and i < maxit:
         x = a / norm(a)
         a = matmul(A, x)
         l = dot(a, x)

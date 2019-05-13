@@ -1,0 +1,31 @@
+Python 3.7.3 (default, Mar 26 2019, 21:43:19) 
+[GCC 8.2.1 20181127] on linux
+Type "help", "copyright", "credits" or "license()" for more information.
+>>> 
+========== RESTART: /home/emaciel/Codes/Python/nummet/eigen/main.py ==========
+k = 1000
+s = 1
+f = 0
+e = 0.0001
+u = 500
+[ 3.84007567e+02 -2.77933116e-02 -6.65049609e-03 ...  1.58559379e-02
+  7.00000000e+00  4.78816748e-01]
+>>> 
+========== RESTART: /home/emaciel/Codes/Python/nummet/eigen/main.py ==========
+k = 1000
+s = 1
+f = 0
+e = 0.0001
+u = 500
+[ 3.84007567e+02 -2.77933116e-02 -6.65049609e-03 ...  1.58559379e-02
+  7.00000000e+00  4.39818382e-01]
+>>> 
+========== RESTART: /home/emaciel/Codes/Python/nummet/eigen/main.py ==========
+k = 1000
+s = 1
+f = 0
+e = 0.0001
+u = 500
+[ 3.84007567e+02 -2.77933116e-02 -6.65049609e-03 ...  1.58559379e-02
+  7.00000000e+00  4.42734957e-01]
+>>> 

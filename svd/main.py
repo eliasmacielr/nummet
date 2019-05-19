@@ -16,12 +16,12 @@ def main():
     # For each image in PCA_FACES_DIR append it as a column
     for imname in sorted(os.listdir(PCA_FACES_DIR)):
         faces = np.c_[faces, imname2array(imname)]
-    # Compute the main face and show it
-    plt.imshow(compute_main_face(faces))
+    # Compute the mean face and show it
+    plt.imshow(compute_mean_face(faces))
     plt.show()
 
 
-def compute_main_face(faces):
+def compute_mean_face(faces):
     return np.reshape(np.mean(faces, axis=1), IMG_DIM_TUPLE)
 
 

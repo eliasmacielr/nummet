@@ -17,7 +17,8 @@ def main():
     for imname in sorted(os.listdir(PCA_FACES_DIR)):
         faces = np.c_[faces, imname2array(imname)]
     # Compute the mean face and show it
-    plt.imshow(compute_mean_face(faces))
+    plt.imshow(compute_mean_face(faces),
+               cmap=plt.get_cmap('gray'))
     plt.show()
 
 

@@ -30,18 +30,16 @@ def main():
     eigval = np.flip(eigval)
     V = np.fliplr(V)
     # Final data
-    faces = np.matmul(V.T, faces.T).T
-    print(faces.dtype)
+    faces = np.matmul(faces, V)
     # Show the principal eigenvector
-    #plt.imshow(np.reshape(faces[:,0], IMG_DIM_TUPLE),
-    #           cmap=plt.get_cmap('gray'))
-    #plt.show()
-
+    plt.imshow(np.reshape(faces[:,0], IMG_DIM_TUPLE),
+               cmap=plt.get_cmap('gray'))
+    plt.show()
     # Given a face in recognition_faces...
-    v_face = imname2array(RECOGNITION_FACES_DIR+'wink-11.png')
-    for i in range(0,len(v_face)):
-        v_face[i] = v_face[i] - mean_face[i]
-    Q, R = linalg.qr(faces)
+    #v_face = imname2array(RECOGNITION_FACES_DIR+'wink-11.png')
+    #for i in range(0,len(v_face)):
+    #    v_face[i] = v_face[i] - mean_face[i]
+    #Q, R = linalg.qr(faces)
     #v_face = linalg(R, np.matmul(Q.T,v_face))
 
 

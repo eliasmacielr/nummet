@@ -23,9 +23,14 @@ def main():
     mean_face = np.reshape(np.mean(faces, axis=1, dtype=np.float64), (IMG_DIM,1))
     faces -= mean_face
     # Calculate covariance
-    s = np.cov(faces.T)
+    #s = np.cov(faces.T)
+    s = np.matmul(faces.T, faces) / 150
     # Obtain eigenvalue and eigenvector
-    eigval, V = linalg.eig(s)
+    eigval, V = np.linalg.eig(s)
+    U1, Sigma1, Vt1 = linalg.svd(faces, full_matrices=False)
+    f = lambda x: x ** 2
+    print(sorted(eigval))
+    print(sorted(f(Sigma1)/150))
     # Sort eigenvalues in descending order
     eigval = np.flip(eigval)
     V = np.fliplr(V)
@@ -41,25 +46,6 @@ def main():
         v_face[i] -= mean_face[i]
     v_face = np.linalg.lstsq(faces, v_face)[0]
 
-    imnames = sorted(os.listdir(PCA_FACES_DIR))
-    k = 1
-    face_i = imname2array(PCA_FACES_DIR+imnames[0])
-    for i in range(0, len(face_i)):
-        face_i[i] -= mean_face[i]
-    face_i = np.linalg.lstsq(faces, face_i)[0]
-    min_norm = np.linalg.norm(v_face - face_i)
-    print(min_norm)
-    for i in range(1, len(imnames)):
-        face_i = imname2array(PCA_FACES_DIR+imnames[i])
-        for j in range(0, len(face_i)):
-            face_i[j] -= mean_face[j]
-        face_i = np.linalg.lstsq(faces, face_i)[0]
-        norm_i = np.linalg.norm(v_face - face_i)
-        print(norm_i)
-        if norm_i < min_norm:
-            min_norm = norm_i
-            k = i
-    print(imnames[k-1])
     #plt.imshow(np.reshape(v_face, IMG_DIM_TUPLE),
     #           cmap=plt.get_cmap('gray'))
     #plt.show()

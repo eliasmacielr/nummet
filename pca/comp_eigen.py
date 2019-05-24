@@ -12,6 +12,7 @@ IMG_DIM                = 240*240
 IMG_DIM_TUPLE          = (240,240)
 N_IMAGES               = 150
 
+
 def main():
     # For each image in PCA_FACES_DIR append it as a column
     faces = np.empty(shape=(IMG_DIM,N_IMAGES), dtype=np.float64)
@@ -22,20 +23,12 @@ def main():
     # Subtract mean
     mean_face = np.reshape(np.mean(faces, axis=1, dtype=np.float64), (IMG_DIM,1))
     faces -= mean_face
-    # Calculate covariance
-    #s = np.cov(faces.T)
-    s = np.matmul(faces.T, faces) / 150
-    # Obtain eigenvalue and eigenvector
-    eigval, V = np.linalg.eig(s)
-    U1, Sigma1, Vt1 = linalg.svd(faces, full_matrices=False)
+
+    U, Sigma, Vt = linalg.svd(faces, full_matrices=False)
     f = lambda x: x ** 2
-    print(sorted(eigval))
-    print(sorted(f(Sigma1)/150))
-    # Sort eigenvalues in descending order
-    eigval = np.flip(eigval)
-    V = np.fliplr(V)
+    Sigma = f(Sigma)/150
     # Final data
-    faces = np.matmul(faces, V[:,:5])
+    faces = np.matmul(faces, V[:,:10])
     # Show the principal eigenvector
     #plt.imshow(np.reshape(faces[:,0], IMG_DIM_TUPLE),
     #           cmap=plt.get_cmap('gray'))

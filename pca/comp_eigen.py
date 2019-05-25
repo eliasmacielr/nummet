@@ -25,20 +25,31 @@ def main():
     faces -= mean_face
 
     U, Sigma, Vt = linalg.svd(faces, full_matrices=False)
-    f = lambda x: x ** 2
-    Sigma = f(Sigma)/150
+
+    #f = lambda x: x ** 2
+    #Sigma = f(Sigma)/150
     # Final data
-    faces = np.matmul(faces, V[:,:10])
-    # Show the principal eigenvector
-    #plt.imshow(np.reshape(faces[:,0], IMG_DIM_TUPLE),
-    #           cmap=plt.get_cmap('gray'))
-    #plt.show()
+    faces = np.matmul(faces, Vt.T[:,:100])
+
+    """
+    # Show the five principal components
+    plt.imshow(np.reshape(faces[:,0], IMG_DIM_TUPLE),
+               cmap=plt.get_cmap('gray'))
+    plt.show()
+    """
+
     # Given a face in recognition_faces...
-    v_face = imname2array(RECOGNITION_FACES_DIR+'wink-11.png')
+    v_face = imname2array('my-face.png')
+    #v_face = imname2array(PCA_FACES_DIR+'centerlight-01.png')
     for i in range(0, len(v_face)):
         v_face[i] -= mean_face[i]
-    v_face = np.linalg.lstsq(faces, v_face)[0]
-
+    x_hat = np.linalg.lstsq(faces, v_face)[0]
+    v_face = np.matmul(faces, x_hat)
+    for i in range(0, len(v_face)):
+        v_face[i] += mean_face[i]
+    plt.imshow(np.reshape(v_face, IMG_DIM_TUPLE),
+               cmap=plt.get_cmap('gray'))
+    plt.show()
     #plt.imshow(np.reshape(v_face, IMG_DIM_TUPLE),
     #           cmap=plt.get_cmap('gray'))
     #plt.show()

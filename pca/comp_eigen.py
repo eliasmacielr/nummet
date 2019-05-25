@@ -16,43 +16,50 @@ N_IMAGES               = 150
 def main():
     # For each image in PCA_FACES_DIR append it as a column
     faces = np.empty(shape=(IMG_DIM,N_IMAGES), dtype=np.float64)
+    pca_faces_imnames = sorted(os.listdir(PCA_FACES_DIR))
     i = 0
-    for imname in sorted(os.listdir(PCA_FACES_DIR)):
+    for imname in pca_faces_imnames:
         faces[:,i] = imname2array(PCA_FACES_DIR+imname)
         i += 1
+    # Copy faces matrix for projections
+    proj_faces = np.matrix.copy(faces)
     # Subtract mean
     mean_face = np.reshape(np.mean(faces, axis=1, dtype=np.float64), (IMG_DIM,1))
     faces -= mean_face
 
     U, Sigma, Vt = linalg.svd(faces, full_matrices=False)
 
-    #f = lambda x: x ** 2
-    #Sigma = f(Sigma)/150
-    # Final data
-    faces = np.matmul(faces, Vt.T[:,:100])
+    # Eigenfaces
+    faces = np.matmul(faces, Vt.T[:,:10])
 
-    """
-    # Show the five principal components
-    plt.imshow(np.reshape(faces[:,0], IMG_DIM_TUPLE),
-               cmap=plt.get_cmap('gray'))
-    plt.show()
-    """
+    # Matrix of projected faces of PCA_faces
+    for k in range(0, proj_faces.shape[1]):
+        v_k = proj_faces[:,k]
+        for i in range(0, len(v_k)):
+            v_k[i] -= mean_face[i]
+        x_hat = np.linalg.lstsq(faces, v_k)[0]
+        v_k = np.matmul(faces, x_hat)
+        proj_faces[:,k] = v_k
 
     # Given a face in recognition_faces...
-    v_face = imname2array('my-face.png')
-    #v_face = imname2array(PCA_FACES_DIR+'centerlight-01.png')
-    for i in range(0, len(v_face)):
-        v_face[i] -= mean_face[i]
-    x_hat = np.linalg.lstsq(faces, v_face)[0]
-    v_face = np.matmul(faces, x_hat)
-    for i in range(0, len(v_face)):
-        v_face[i] += mean_face[i]
-    plt.imshow(np.reshape(v_face, IMG_DIM_TUPLE),
-               cmap=plt.get_cmap('gray'))
-    plt.show()
-    #plt.imshow(np.reshape(v_face, IMG_DIM_TUPLE),
-    #           cmap=plt.get_cmap('gray'))
-    #plt.show()
+    print('recognition-'+str(faces.shape[1])+'pcs')
+    #recognition_faces_imnames = sorted(os.listdir(RECOGNITION_FACES_DIR))
+    recognition_faces_imnames = ['my-face.png']
+    for imname in recognition_faces_imnames:
+        v_face = imname2array(imname)
+        for i in range(0, len(v_face)):
+            v_face[i] -= mean_face[i]
+        x_hat = np.linalg.lstsq(faces, v_face)[0]
+        v_face = np.matmul(faces, x_hat)
+        # Find min|v_face - v_k|
+        min_norm = np.linalg.norm(v_face - proj_faces[:,0])
+        k = 0
+        for i in range(1, proj_faces.shape[1]):
+            norm_k = np.linalg.norm(v_face - proj_faces[:,i])
+            if norm_k < min_norm:
+                min_norm = norm_k
+                k = i
+        print(imname + ' -> ' + pca_faces_imnames[k])
 
 
 def imname2array(imname):
